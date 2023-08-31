@@ -1,0 +1,10 @@
+[meta]
+name = webview
+version = 6b2747222f14265ced7af5fa13e6f16d43a55325
+
+[github]
+repository = webview/webview
+
+[check]
+include/webview.h = webview.h
+LICENSE = LICENSE

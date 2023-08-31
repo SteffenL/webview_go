@@ -1,0 +1,10 @@
+[meta]
+name = Microsoft Edge WebView2
+version = 1.0.1150.38
+
+[nuget]
+package = Microsoft.Web.WebView2
+
+[check]
+include/WebView2.h = build/native/include/WebView2.h
+LICENSE = LICENSE.txt

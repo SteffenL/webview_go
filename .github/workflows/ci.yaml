@@ -19,3 +19,9 @@ jobs:
         run: go build ./examples/basic ./examples/bind
       - name: Run tests
         run: go test
+  check-libs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check libraries
+        run: python3 ./scripts/check_libs.py
