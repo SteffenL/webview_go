@@ -25,4 +25,4 @@ jobs:
       - uses: actions/checkout@v3
       - name: Check libraries
         if: vars.WEBVIEW_DISABLE_CHECK_LIBS == ''
-        run: python3 ./scripts/check_libs.py
+        run: python3 ./scripts/check_libs.py -v
