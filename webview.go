@@ -2,17 +2,7 @@ package webview
 
 /*
 #cgo CFLAGS: -I${SRCDIR}/libs/webview/include
-#cgo CXXFLAGS: -I${SRCDIR}/libs/webview/include -DWEBVIEW_STATIC
-
-#cgo linux openbsd freebsd netbsd CXXFLAGS: -DWEBVIEW_GTK -std=c++11
-#cgo linux openbsd freebsd netbsd LDFLAGS: -ldl
-#cgo linux openbsd freebsd netbsd pkg-config: gtk+-3.0 webkit2gtk-4.0
-
-#cgo darwin CXXFLAGS: -DWEBVIEW_COCOA -std=c++11
-#cgo darwin LDFLAGS: -framework WebKit -ldl
-
-#cgo windows CXXFLAGS: -DWEBVIEW_EDGE -std=c++14 -I${SRCDIR}/libs/mswebview2/include
-#cgo windows LDFLAGS: -static -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion
+#cgo CXXFLAGS: -I${SRCDIR}/libs/webview/include -DWEBVIEW_HEADER
 
 #include "webview.h"
 
@@ -25,6 +15,7 @@ void CgoWebViewUnbind(webview_t w, const char *name);
 */
 import "C"
 import (
+	_ "github.com/webview/webview_go/backend"
 	_ "github.com/webview/webview_go/libs/mswebview2"
 	_ "github.com/webview/webview_go/libs/mswebview2/include"
 	_ "github.com/webview/webview_go/libs/webview"

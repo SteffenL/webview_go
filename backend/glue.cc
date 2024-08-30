@@ -8,6 +8,8 @@ struct binding_context {
     uintptr_t index;
 };
 
+extern "C" {
+
 void _webviewDispatchGoCallback(void *);
 void _webviewBindingGoCallback(webview_t, char *, char *, uintptr_t);
 
@@ -25,7 +27,7 @@ void CgoWebViewDispatch(webview_t w, uintptr_t arg) {
 }
 
 void CgoWebViewBind(webview_t w, const char *name, uintptr_t index) {
-    struct binding_context *ctx = calloc(1, sizeof(struct binding_context));
+    struct binding_context *ctx = (struct binding_context *)calloc(1, sizeof(struct binding_context));
     ctx->w = w;
     ctx->index = index;
     webview_bind(w, name, _webview_binding_cb, (void *)ctx);
@@ -33,4 +35,6 @@ void CgoWebViewBind(webview_t w, const char *name, uintptr_t index) {
 
 void CgoWebViewUnbind(webview_t w, const char *name) {
     webview_unbind(w, name);
+}
+
 }
