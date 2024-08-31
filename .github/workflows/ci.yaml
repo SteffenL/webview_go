@@ -44,6 +44,7 @@ jobs:
           # [...]/bin/ld.exe: [...]\go-link-3209855222\000008.o: in function `x_cgo_thread_start':
           # \\_\_\runtime\cgo/gcc_util.c:18: undefined reference to `__imp___iob_func'
           - { image: windows-2022, go: '1.20' }
+          - { image: windows-2022, go: '1.19' }
     name: Build (${{ matrix.image }}, go ${{ matrix.go }})
     steps:
       - uses: actions/checkout@v4
