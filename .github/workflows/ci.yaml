@@ -13,31 +13,36 @@ jobs:
         # Go 1.14 made -mod=vendor default.
         # Go 1.13 is the version set in go.mod.
         include:
-          - { image: macos-14,     go: '1.22' }
+          - { image: macos-14,     go: '1.22', backend: webview.backend.cocoa_webkit }
           # macos-12 runner has x86_64 support which is needed for old versions of Go
-          - { image: macos-12,     go: '1.13' }
-          - { image: ubuntu-22.04, go: '1.22' }
-          - { image: ubuntu-22.04, go: '1.14' }
-          - { image: ubuntu-22.04, go: '1.13' }
-          - { image: windows-2022, go: '1.22' }
+          - { image: macos-12,     go: '1.13', backend: webview.backend.cocoa_webkit }
+          - { image: ubuntu-22.04, go: '1.22', backend: webview.backend.gtk4_webkitgtk600, apt: libgtk-4-dev libwebkitgtk-6.0-dev }
+          - { image: ubuntu-22.04, go: '1.22', backend: webview.backend.gtk3_webkitgtk401, apt: libgtk-3-dev libwebkit2gtk-4.1-dev }
+          - { image: ubuntu-22.04, go: '1.22', backend: webview.backend.gtk3_webkitgtk400, apt: libgtk-3-dev libwebkit2gtk-4.0-dev }
+          - { image: ubuntu-22.04, go: '1.14', backend: webview.backend.gtk3_webkitgtk401, apt: libgtk-3-dev libwebkit2gtk-4.1-dev }
+          - { image: ubuntu-22.04, go: '1.13', backend: webview.backend.gtk3_webkitgtk401, apt: libgtk-3-dev libwebkit2gtk-4.1-dev }
+          - { image: windows-2022, go: '1.22', backend: webview.backend.win32_edge }
           # Go 1.20 is the earliest version that is usable in this environment as of 2024-08-31.
           # Compilation fails with older versions:
           # [...]/bin/ld.exe: [...]\go-link-3209855222\000008.o: in function `x_cgo_thread_start':
           # \\_\_\runtime\cgo/gcc_util.c:18: undefined reference to `__imp___iob_func'
-          - { image: windows-2022, go: '1.20' }
+          - { image: windows-2022, go: '1.20', backend: webview.backend.win32_edge }
     name: Build (${{ matrix.image }}, go ${{ matrix.go }})
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.0-dev
+        run: sudo apt-get update && sudo apt-get install -y ${{ matrix.apt }}
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
       - name: Build examples
         run: >
           go build
+          -tags ${{ matrix.backend }}
           ./examples/basic
           ./examples/bind
       - name: Run tests
-        run: go test
+        run: >
+          go test
+          -tags ${{ matrix.backend }}
